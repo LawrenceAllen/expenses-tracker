@@ -34,7 +34,6 @@ const Wallets = () => {
   const toggleAddForm = () => {
     if (addFormVisibility) {
       setAddFormVisibility(false)
-      setAddBalanceVisibility(false)
       setOptionsVisibility(true)
     } else {
       setAddFormVisibility(true)
@@ -56,6 +55,7 @@ const Wallets = () => {
     setAddFormVisibility(false)
     setAddBalanceVisibility(false)
     setOptionsVisibility(true)
+    clearWarningText()
   }
 
   const clearWarningText = () => {
@@ -92,16 +92,22 @@ const Wallets = () => {
   }
 
   const updateBalance = () => {
-    const walletDocRef = doc(db, 'wallets', walletID)
-    const wallet = wallets.find(e => e.id === walletID)
-    if (wallet !== null && wallet !== undefined) {
-      if (newBalanceAmount > 0) {
-        const balance = wallet.balance + newBalanceAmount
-        updateDoc(walletDocRef, {
-          balance: balance
-        })
-      } else {
-        setWarningText("Must not be less than 0")
+    if (walletID === '') {
+      setWarningText("Please choose a wallet")
+    } else {
+      const walletDocRef = doc(db, 'wallets', walletID)
+      const wallet = wallets.find(e => e.id === walletID)
+      if (wallet !== null && wallet !== undefined) {
+        if (newBalanceAmount > 0) {
+          const balance = wallet.balance + newBalanceAmount
+          updateDoc(walletDocRef, {
+            balance: balance
+          })
+        } else if (isNaN(newBalanceAmount)) {
+          setWarningText('Please fill out amount')
+        } else {
+          setWarningText("Must not be less than 0")
+        }
       }
     }
   }
@@ -141,8 +147,8 @@ const Wallets = () => {
     {
       id: 1,
       type: "number",
-      labelName: "balance",
-      placeholder: "Balance",
+      labelName: "amount",
+      placeholder: "Amount",
       required: true,
       onChange: setNewWalletBalance
     }
