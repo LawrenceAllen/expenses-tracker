@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
-import { db } from '../../firebase.config'
 import { setDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore'
-import { Header, Button, Form } from '../../components/global'
-import { getWallets } from '../../utils/getWallets'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import WalletList from '../../components/wallets/wallet-list'
+import { db } from '../../firebase.config'
+import { CustomCircularProgressbar } from '../../components/global/progressbar/circular-progress-bar';
 import ClickAwayListener from '@mui/base/ClickAwayListener'; 
-import { NewWalletType } from '../../types/wallet'
+import { Header, Button, Form } from '../../components/global'
 import DropdownList from '../../components/global/list/dropdown_list'
+import WalletList from '../../components/wallets/wallet-list'
+import { getWallets } from '../../utils/getWallets'
 
 const Wallets = () => {
   const [optionsVisibility, setOptionsVisibility] = useState(true) 
@@ -17,13 +15,11 @@ const Wallets = () => {
   const [walletID, setWalletID] = useState('') 
   const [name, setName] = useState('')
   const [balance, setBalance] = useState('')
-  const [newBalanceAmount, setNewBalanceAmount] = useState('')
+  const [newBalanceAmount, setNewBalanceAmount] = useState(0)
   const [warningText, setWarningText] = useState('')
-  const [circularValue, setCircularValue] = useState(0)
+ 
+  const [dropdownTitle, setDropdownTitle] = useState('Choose Wallets')
   const wallets = getWallets()
-
-  let value: number = 0;
-  let interval: any;
 
   useEffect(() => {
     const warningTextTimeout = setTimeout(() => {
@@ -34,34 +30,6 @@ const Wallets = () => {
       clearTimeout(warningTextTimeout)
     }
   }, [warningText])
-
-  useEffect(() => {
-    if (warningText !== '') {
-      resetCounter();
-      interval = setInterval(function() {
-        if (value === 100) {
-          stopCounter()
-        }
-        value++
-        setCircularValue(value)
-      }, 30);
-    }
-
-    return () => {
-      resetCounter()
-    }
-
-  }, [warningText])
-
-  const stopCounter = () => {
-    clearInterval(interval);
-  }
-  
-  const resetCounter = () => {
-    stopCounter();
-    value = 0
-    setCircularValue(value)
-  }
 
   const toggleAddForm = () => {
     if (addFormVisibility) {
@@ -127,15 +95,15 @@ const Wallets = () => {
     const walletDocRef = doc(db, 'wallets', walletID)
     const wallet = wallets.find(e => e.id === walletID)
     if (wallet !== null && wallet !== undefined) {
-      const balance = wallet.balance + parseInt(newBalanceAmount)
-      updateDoc(walletDocRef, {
-        balance: balance
-      })
+      if (newBalanceAmount > 0) {
+        const balance = wallet.balance + newBalanceAmount
+        updateDoc(walletDocRef, {
+          balance: balance
+        })
+      } else {
+        setWarningText("Must not be less than 0")
+      }
     }
-  }
-
-  const setExpenseWalletID = (e: any) => {
-    setWalletID(e.target.value)
   }
 
   const setWalletName = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -147,7 +115,7 @@ const Wallets = () => {
   }
 
   const setNewWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setNewBalanceAmount(e.currentTarget.value);
+    setNewBalanceAmount(parseInt(e.currentTarget.value));
   }
 
   const addWalletInputInfo = [
@@ -182,14 +150,13 @@ const Wallets = () => {
   
   return (
     <main>
-      <Header headerOption={false}></Header>
+      <Header headerOption={false} />
       <ClickAwayListener onClickAway={addFormClickAway}>
         <div className='p-6'>
           {optionsVisibility
             ? <div className='flex gap-2 justify-between align-center w-full'>
                 <Button onClick={toggleAddForm}><p>Add Wallet</p></Button>
                 <Button onClick={toggleAddBalanceForm}><p>Add Balance</p></Button>
-                {/* <Button onClick={toggleAddForm}><p>Remove Wallets</p></Button> */}
               </div>
             : ''
           }
@@ -198,18 +165,7 @@ const Wallets = () => {
               {warningText !== ''
                 ? <Button className='cursor-default flex justify-center items-center border-2 border-red-500 mt-4' onClick={clearWarningText}>
                     <p className='ml-auto'>{warningText}</p>
-                    <div className='ml-auto w-6 h-6'>
-                      <CircularProgressbar
-                        maxValue={80} 
-                        value={circularValue}
-                        strokeWidth={50}
-                        background={true}
-                        styles={buildStyles({
-                          strokeLinecap: "butt",
-                          pathColor: "#fca5a5",
-                        })}
-                      />
-                    </div>
+                    <CustomCircularProgressbar warningText={warningText}/>
                   </Button>
                 : <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
                     <Button variant='add' onClick={addWallet}><p>Add</p></Button>
@@ -223,37 +179,20 @@ const Wallets = () => {
               <label htmlFor="walletUsed"></label>
               <DropdownList 
                 listData={wallets}
+                title={dropdownTitle}
+                setWalletID={setWalletID}
+                setDropdownTitle={setDropdownTitle}
               />
-              {/* <select className='cursor-pointer w-full mt-4 bg-none bg-transparent border-b-2 border-cyan active:outline-none focus:outline-none text-gray-500 placeholder:text-gray-500' name="walletUsed" id="walletUsed" onChange={setExpenseWalletID}>
-                <option className='hidden' value="">Wallet</option>
-                {wallets.map((wallet: NewWalletType) => (
-                  <option className='text-cyan bg-orange-100' key={wallet.id} value={wallet.id}>
-                    {wallet.name}
-                  </option>
-                ))}
-              </select> */}
-              <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
-                <Button variant='add' onClick={updateBalance}><p>Add</p></Button>
-                <Button variant="cancel" onClick={toggleAddBalanceForm}><p>Cancel</p></Button>
-              </div>
-              {/* {warningText !== ''
+              {warningText !== ''
                 ? <Button className='cursor-default flex justify-center items-center border-2 border-red-500 mt-4' onClick={clearWarningText}>
                     <p className='ml-auto'>{warningText}</p>
-                    <div className='ml-auto w-6 h-6'>
-                      <CircularProgressbar
-                        maxValue={80} 
-                        value={circularValue}
-                        strokeWidth={50}
-                        background={true}
-                        styles={buildStyles({
-                          strokeLinecap: "butt",
-                          pathColor: "#fca5a5",
-                        })}
-                      />
-                    </div>
+                    <CustomCircularProgressbar warningText={warningText}/>
                   </Button>
-                : 
-              } */}
+                : <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
+                    <Button variant='add' onClick={updateBalance}><p>Add</p></Button>
+                    <Button variant="cancel" onClick={toggleAddBalanceForm}><p>Cancel</p></Button>
+                  </div>
+              }
             </Form>
           }
         </div>

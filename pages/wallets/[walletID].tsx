@@ -30,15 +30,15 @@ const WalletActivities = () => {
       </main>
       <div className="flex flex-col gap-4 p-4">
         <h1 className='text-cyan text-2xl'>{walletName}</h1>
-        {expenses.map((e: NewExpenseType) => {
-          if (e.wallet_id === walletID) {
+        {expenses.map((expense: NewExpenseType) => {
+          if (expense.wallet_id === walletID) {
             return <ExpenseCard
-              key={e.id}
-              id={e.id}
-              amount={e.amount}
-              transaction_date={e.transaction_date}
-              transaction_type={e.transaction_type}
-              wallet_id={e.wallet_id}
+              key={expense.id}
+              id={expense.id}
+              amount={expense.amount}
+              transaction_date={expense.transaction_date}
+              transaction_type={expense.transaction_type}
+              wallet_id={expense.wallet_id}
               isHideWalletName={true}
             />
           }

@@ -10,18 +10,17 @@ export function getExpenses() {
   useEffect(
     () => onSnapshot(expensesColRef, (snapshot: QuerySnapshot<DocumentData>) => {
       setExpenses(
-          snapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              amount: doc.data().amount,
-              transaction_date: doc.data().transaction_date,
-              transaction_type: doc.data().transaction_type,
-              wallet_id: doc.data().wallet_id,
-              subid: doc.data().subid
-            };
-          })
-        );
-      }),
+        snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            amount: doc.data().amount,
+            transaction_date: doc.data().transaction_date,
+            transaction_type: doc.data().transaction_type,
+            wallet_id: doc.data().wallet_id,
+            subid: doc.data().subid
+          }
+        }).sort((a, b) => b.transaction_date - a.transaction_date)
+      )}),
     []
   );
 
