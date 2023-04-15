@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { setDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore'
 import { db } from '../../firebase.config'
-import { CustomCircularProgressbar } from '../../components/global/progressbar/circular-progress-bar';
-import ClickAwayListener from '@mui/base/ClickAwayListener'; 
+import { CustomCircularProgressbar } from '../../components/global/progressbar/circular-progress-bar'
+import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { Header, Button, Form } from '../../components/global'
 import DropdownList from '../../components/global/list/dropdown_list'
 import WalletList from '../../components/wallets/wallet-list'
@@ -14,7 +14,7 @@ const Wallets = () => {
   const [addBalanceVisibility, setAddBalanceVisibility] = useState(false)
   const [walletID, setWalletID] = useState('') 
   const [name, setName] = useState('')
-  const [balance, setBalance] = useState('')
+  const [balance, setBalance] = useState(0)
   const [newBalanceAmount, setNewBalanceAmount] = useState(0)
   const [warningText, setWarningText] = useState('')
  
@@ -65,29 +65,42 @@ const Wallets = () => {
   const addWallet = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const existingWallet = wallets.find(e => e.name === name)
-    const convertedBalance = parseInt(balance)
 
-    if (name === '' && balance === '') {
+    if (name === '' && balance === 0) {
       setWarningText('Please fill out the fields')
+      clearNameAndBalance()
     } else if (name === '') {
       setWarningText('Please enter a name for the wallet')
-    } else if (balance === '') {
-      setWarningText('Please enter a number for the balance');
+      clearNameAndBalance('name')
     } else if (existingWallet) {
       setWarningText('Wallet exists already')
-    }  else if (convertedBalance <= 0) {
+      clearNameAndBalance('name')
+    }  else if (balance <= 0 || isNaN(balance)) {
       setWarningText('Please enter a number higher than 0')
+      clearNameAndBalance('balance')
     } else {
       const highest = Math.max(...wallets.map(e => e.subid), 0)
       setDoc(doc(db, 'wallets', '2311212520-' + (highest + 1).toString()), 
         {
           name: name, 
-          balance: convertedBalance,
+          balance: balance,
           subid: highest + 1,
           date_added: serverTimestamp()
         }
       )
       toggleAddForm()
+      clearNameAndBalance()
+    }
+  }
+
+  const clearNameAndBalance = (string?: string) => {
+    if (string === 'name') {
+      setName('')
+    } else if (string === 'balance') {
+      setBalance(0)
+    } else {
+      setName('')
+      setBalance(0)
     }
   }
 
@@ -113,15 +126,15 @@ const Wallets = () => {
   }
 
   const setWalletName = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.currentTarget.value);
+    setName(e.currentTarget.value)
   }
 
   const setWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setBalance(e.currentTarget.value);
+    setBalance(parseInt(e.currentTarget.value))
   }
 
   const setNewWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setNewBalanceAmount(parseInt(e.currentTarget.value));
+    setNewBalanceAmount(parseInt(e.currentTarget.value))
   }
 
   const addWalletInputInfo = [
@@ -129,14 +142,16 @@ const Wallets = () => {
       id: 1,
       type: "text",
       labelName: "name",
+      value: name,
       placeholder: "Name",
       required: true,
-      onChange: setWalletName
+      onChange: setWalletName,
     },
     {
       id: 2,
       type: "number",
       labelName: "balance",
+      value: balance || '',
       placeholder: "Balance",
       required: true,
       onChange: setWalletBalance
@@ -148,6 +163,7 @@ const Wallets = () => {
       id: 1,
       type: "number",
       labelName: "amount",
+      value: newBalanceAmount,
       placeholder: "Amount",
       required: true,
       onChange: setNewWalletBalance

@@ -7,6 +7,7 @@ type Form = {
     id: number
     type: string
     labelName: string
+    value: any
     placeholder?: string
     required?: boolean
     pattern?: string
@@ -26,7 +27,7 @@ export const Form = ({children, className, inputInfo, inputClassNames}: Form) =>
         {inputInfo.map((input) => (
           <div key={input.id} className={classNames}>
             <label htmlFor={input.labelName}></label>
-            <input id={input.labelName} className={inputStyling} type={input.type} name={input.labelName} placeholder={input.placeholder} required={input.required} pattern={input.pattern} onChange={input.onChange} />
+            <input id={input.labelName} className={inputStyling} type={input.type} name={input.labelName} value={input.value} placeholder={input.placeholder} required={input.required} pattern={input.pattern} onChange={input.onChange} />
           </div>
         ))}
         {children}
