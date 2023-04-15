@@ -7,13 +7,12 @@ import { getWallets } from "../../../utils/getWallets"
 type DropdownListProps = {
   listData: any[]
   title: string
-  onClick?: (e: any) => void
   setWalletID: (e: string) => void
   setDropdownTitle: (e: string) => void
   className?: string
 }
 
-export const DropdownList = ({ listData, title, onClick, className, setWalletID, setDropdownTitle}: DropdownListProps) => {
+export const DropdownList = ({ listData, title, className, setWalletID, setDropdownTitle}: DropdownListProps) => {
   
   const [showList, setShowList] = useState(false)
 
@@ -38,9 +37,9 @@ export const DropdownList = ({ listData, title, onClick, className, setWalletID,
         <MdKeyboardArrowDown />
       </div>
       {showList && 
-        <List className="gap-0">
+        <List className="bg-orange-200 gap-1 h-56 overflow-y-auto">
           {listData.map((item: any) => (
-            <div key={item.id} id={item.id} className="select-none cursor-pointer flex items-center h-8 px-2 py-5 bg-orange-200 border-b-2 border-x-2 border-cyan" onClick={() => getWalletID(item)}>
+            <div key={item.id} id={item.id} className="select-none cursor-pointer flex items-center h-8 px-2 py-6 bg-orange-200 border-cyan hover:bg-orange-300" onClick={() => getWalletID(item)}>
               <p>{item.name}</p>
             </div>
           ))}
