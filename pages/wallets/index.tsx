@@ -4,7 +4,7 @@ import { db } from '../../firebase.config'
 import { CustomCircularProgressbar } from '../../components/global/progressbar/circular-progress-bar';
 import ClickAwayListener from '@mui/base/ClickAwayListener'; 
 import { Header, Button, Form } from '../../components/global'
-import DropdownList from '../../components/global/list/dropdown-list'
+import DropdownList from '../../components/global/list/dropdown_list'
 import WalletList from '../../components/wallets/wallet-list'
 import { getWallets } from '../../utils/getWallets'
 
