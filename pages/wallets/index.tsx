@@ -4,9 +4,9 @@ import { db } from '../../firebase.config'
 import { CustomCircularProgressbar } from '../../components/global/progressbar/circular-progress-bar'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { Header, Button, Form } from '../../components/global'
-import DropdownList from '../../components/global/list/dropdown_list'
 import WalletList from '../../components/wallets/wallet-list'
 import { getWallets } from '../../utils/getWallets'
+import { WalletDropdownList } from '../../components/wallets/wallet-dropdown-list'
 
 const Wallets = () => {
   const [optionsVisibility, setOptionsVisibility] = useState(true) 
@@ -45,6 +45,8 @@ const Wallets = () => {
     if (addBalanceVisibility) {
       setAddBalanceVisibility(false)
       setOptionsVisibility(true)
+      setDropdownTitle('Choose Wallets')
+      setNewBalanceAmount(0)
     } else {
       setAddBalanceVisibility(true)
       setOptionsVisibility(false)
@@ -116,6 +118,8 @@ const Wallets = () => {
           updateDoc(walletDocRef, {
             balance: balance
           })
+          toggleAddBalanceForm()
+          setDropdownTitle('Choose Wallets')
         } else if (isNaN(newBalanceAmount)) {
           setWarningText('Please fill out amount')
         } else {
@@ -163,7 +167,7 @@ const Wallets = () => {
       id: 1,
       type: "number",
       labelName: "amount",
-      value: newBalanceAmount,
+      value: newBalanceAmount || '',
       placeholder: "Amount",
       required: true,
       onChange: setNewWalletBalance
@@ -199,7 +203,7 @@ const Wallets = () => {
           {addBalanceVisibility &&
             <Form inputInfo={addBalanceInputInfo}>
               <label htmlFor="walletUsed"></label>
-              <DropdownList 
+              <WalletDropdownList
                 listData={wallets}
                 title={dropdownTitle}
                 setWalletID={setWalletID}
