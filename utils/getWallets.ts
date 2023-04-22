@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { db } from '../firebase.config'
 import { collection, onSnapshot, QuerySnapshot, DocumentData, CollectionReference} from '@firebase/firestore'
 import { NewWalletType } from '../types/wallet'

@@ -5,19 +5,17 @@ import { getWallets } from '../utils/getWallets'
 import { getExpenses } from '../utils/getExpenses'
 import { MdOutlineAddCircleOutline } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { db, walletsColRef } from '../firebase.config'
 import { setDoc, updateDoc, doc, serverTimestamp } from '@firebase/firestore'
-import { NewWalletType } from '../types/wallet'
-
 import { WarningButton } from '../components/global/button/warning_button'
-import { undefinedAndNullChecker } from '../utils/undefinedAndNullChecker'
 import { AddExpenseErrorHandling } from '../utils/addExpenseErrorHandling'
+import { WalletDropdownList } from '../components/wallets/wallet-dropdown-list'
  
 const Home = () => {
   const [isExistingWallet, setIsExistingWallet] = useState(false)
   const [isAddExpenseForm, setIsAddExpenseForm] = useState(false)
   const [addExpenseContainerWidth, setAddExpenseContainerWidth] = useState('w-14')
+  const [dropdownTitle, setDropdownTitle] = useState('Choose Wallets')
   const [amount, setAmount] = useState(0)
   const [transactionType, setTransactionType] = useState('')
   const [walletID, setWalletID] = useState('')
@@ -140,6 +138,7 @@ const Home = () => {
       id: 1,
       type: "number",
       labelName: "amount",
+      value: amount,
       placeholder: "Amount",
       required: true,
       onChange: setExpenseAmount
@@ -148,6 +147,7 @@ const Home = () => {
       id: 2,
       type: "text",
       labelName: "transaction_type",
+      value: transactionType,
       placeholder: "Transaction Type",
       required: true,
       onChange: setExpenseTransactionType
@@ -183,14 +183,12 @@ const Home = () => {
                       />
                     : <>
                         <label htmlFor="walletUsed"></label>
-                        <select className='cursor-pointer w-full mt-4 bg-none bg-transparent border-b-2 border-orange-300  active:outline-none focus:outline-none text-gray-300 placeholder:text-white' name="walletUsed" id="walletUsed" onChange={setExpenseWalletID}>
-                          <option className='hidden' value="">Wallet</option>
-                          {wallets.map((wallet: NewWalletType) => (
-                            <option className='text-cyan bg-orange-100' key={wallet.id} value={wallet.id}>
-                              {wallet.name}
-                            </option>
-                          ))}
-                        </select>
+                        <WalletDropdownList
+                          listData={wallets}
+                          title={dropdownTitle}
+                          setWalletID={setWalletID}
+                          setDropdownTitle={setDropdownTitle}
+                        />
                         <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
                           <Button variant='add' onClick={addExpense}><p>Add</p></Button>
                           <Button variant="cancel" onClick={toggleAddExpenseForm}><p>Cancel</p></Button>

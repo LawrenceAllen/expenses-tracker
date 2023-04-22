@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
 import { NewWalletType } from "../../types/wallet"
 import { List } from "../global"
 import WalletCard from "./wallet-card"
 
 type WalletList = {
-  wallets: []
+  wallets: NewWalletType[]
   className?: string
   warningText: string
   setWarningText: (value: string) => void

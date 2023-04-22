@@ -79,6 +79,7 @@ export const WalletCard = ({wallet, warningText, setWarningText}: WalletCard) =>
     {
       id: 1,
       type: "text",
+      value: newName,
       labelName: "editWalletName",
       placeholder: wallet.name,
       onChange: setNewWalletName
