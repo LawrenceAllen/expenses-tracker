@@ -100,23 +100,21 @@ const Home = () => {
     const walletDocRef = doc(walletsColRef, walletID)
     const wallet = wallets.find(e => e.id === walletID)
     
-    if (wallet !== undefined && wallet !== null) {
-      const addExpenseErrorCheck = AddExpenseErrorHandling(amount, transactionType, wallet.balance, setWarningText)
-      if (addExpenseErrorCheck) {
-        updateDoc(walletDocRef, {
-          balance: wallet.balance - amount
-        })
-        setDoc(doc(db, 'expenses', '52416514195-' + (highest + 1).toString()), 
-          {
-            amount: amount,
-            transaction_date: serverTimestamp(),
-            transaction_type: transactionType,
-            wallet_id: walletID,
-            subid: highest + 1
-          }
-        )
-        toggleAddExpenseForm()
-      }
+    const addExpenseErrorCheck = AddExpenseErrorHandling(amount, transactionType, wallet!.balance, setWarningText)
+    if (addExpenseErrorCheck) {
+      updateDoc(walletDocRef, {
+        balance: wallet!.balance - amount
+      })
+      setDoc(doc(db, 'expenses', '52416514195-' + (highest + 1).toString()), 
+        {
+          amount: amount,
+          transaction_date: serverTimestamp(),
+          transaction_type: transactionType,
+          wallet_id: walletID,
+          subid: highest + 1
+        }
+      )
+      toggleAddExpenseForm()
     }
   }
 

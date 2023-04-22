@@ -112,19 +112,17 @@ const Wallets = () => {
     } else {
       const walletDocRef = doc(db, 'wallets', walletID)
       const wallet = wallets.find(e => e.id === walletID)
-      if (wallet !== null && wallet !== undefined) {
-        if (newBalanceAmount > 0) {
-          const balance = wallet.balance + newBalanceAmount
-          updateDoc(walletDocRef, {
-            balance: balance
-          })
-          toggleAddBalanceForm()
-          setDropdownTitle('Choose Wallets')
-        } else if (isNaN(newBalanceAmount)) {
-          setWarningText('Please fill out amount')
-        } else {
-          setWarningText("Must not be less than 0")
-        }
+      if (newBalanceAmount > 0) {
+        const balance = wallet!.balance + newBalanceAmount
+        updateDoc(walletDocRef, {
+          balance: balance
+        })
+        toggleAddBalanceForm()
+        setDropdownTitle('Choose Wallets')
+      } else if (isNaN(newBalanceAmount)) {
+        setWarningText('Please fill out amount')
+      } else {
+        setWarningText("Must not be less than 0")
       }
     }
   }

@@ -19,7 +19,7 @@ export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wal
   const normalDateOptions = {month: 'long', day: 'numeric', year: 'numeric'}
   const weekdayOptions = {weekday: 'long'}
   const timeOptions = {hour: 'numeric', minute: 'numeric'}
-  const wallets = getWallets()
+  const wallets = getWallets()!;
 
   const [walletName, setWalletName] = useState('')
   const [date, setDate] = useState('')
@@ -27,27 +27,21 @@ export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wal
   const classNames = twMerge('w-full p-4 bg-orange-300 rounded-xl', className)
 
   useEffect(() => {
-    if (wallets !== null && wallets !== undefined) {
-      const wallet = wallets.find((e) => e.id === wallet_id)
-      if (wallet !== undefined && wallet !== null) {
-        setWalletName(wallet.name)
-      }
-    }
+    const wallet = wallets.find((e) => e.id === wallet_id)
+    setWalletName(wallet!.name)
   }, [id, wallets])
 
   useEffect(() => {
-    if (transaction_date !== null && transaction_date !== undefined) {
-      const transactionDate = transaction_date.toDate()
-      const normalDate = transactionDate.toLocaleDateString('en-us', normalDateOptions)
-      const weekday = transactionDate.toLocaleDateString('en-us', weekdayOptions)
-      const time = transactionDate.toLocaleTimeString('en-us', timeOptions)
-      const date = normalDate + ' ' + weekday + ' - ' + time
-      const previewDate = normalDate + ' - ' + time
-      if (type === 'preview') {
-        setDate(previewDate)
-      } else {
-        setDate(date)
-      }
+    const transactionDate = transaction_date!.toDate()
+    const normalDate = transactionDate.toLocaleDateString('en-us', normalDateOptions)
+    const weekday = transactionDate.toLocaleDateString('en-us', weekdayOptions)
+    const time = transactionDate.toLocaleTimeString('en-us', timeOptions)
+    const date = normalDate + ' ' + weekday + ' - ' + time
+    const previewDate = normalDate + ' - ' + time
+    if (type === 'preview') {
+      setDate(previewDate)
+    } else {
+      setDate(date)
     }
   }, [transaction_date])
   

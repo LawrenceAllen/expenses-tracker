@@ -15,12 +15,8 @@ const WalletActivities = () => {
   const [walletName, setWalletName] = useState('')
 
   useEffect(() => {
-    if (wallets !== undefined && expenses !== null) {      
-      const wallet = wallets.find(e => e.id === walletID)
-      if (wallet !== undefined && wallet !== null) {
-        setWalletName(wallet.name)
-      }
-    }
+    const wallet = wallets.find(e => e.id === walletID)
+    setWalletName(wallet!.name)
   }, [wallets])
   
   return (
