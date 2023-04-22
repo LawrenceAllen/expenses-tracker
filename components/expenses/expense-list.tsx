@@ -1,13 +1,16 @@
 import { ExpensesArray, NewExpenseType } from "../../types/expense"
 import { List } from "../global"
+import { twMerge } from 'tailwind-merge'
 import ExpenseCard from "./expense-card"
 
 export const ExpenseList = ({expenses, className}: ExpensesArray) => {
 
+  const classNames = twMerge('overflow-y-auto h-screen py-4', className)
+
   return(
     <div className="p-4">
       <h1 className="text-3xl text-cyan mb-2">Expenses</h1>
-      <List className={className}>
+      <List className={classNames}>
         {expenses.map((expense: NewExpenseType) => (
           <ExpenseCard
             key={expense.id}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { NewExpenseType } from "../../types/expense"
-import { Text, List } from "../global"
+import { Text } from "../global"
 import { getWallets } from '../../utils/getWallets'
 import { twMerge } from 'tailwind-merge'
 
