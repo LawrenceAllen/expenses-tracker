@@ -16,7 +16,7 @@ const WalletActivities = () => {
 
   useEffect(() => {
     const wallet = wallets.find(e => e.id === walletID)
-    setWalletName(wallet!.name)
+    wallet && setWalletName(wallet.name)
   }, [wallets])
   
   return (
