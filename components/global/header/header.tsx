@@ -2,10 +2,10 @@ import { useState, useEffect } from "react"
 import Link from 'next/link'
 
 type Header = {
-  headerOption: boolean
+  page: string
 }
 
-export const Header = ({headerOption}: Header) => {
+export const Header = ({page}: Header) => {
 
   const removeMarker = {
     listStyleType: 'none'
@@ -16,8 +16,8 @@ export const Header = ({headerOption}: Header) => {
   return (
     <header className='w-full h-max bg-orange-300 p-4 py-5 drop-shadow'>
       <ul className="w-max ml-auto flex gap-5 text-cyan text-lg font-semibold">
-        <li className={!headerOption ? liStyling: ''} style={removeMarker}><Link href='/wallets'>Wallets</Link></li>
-        <li className={headerOption ? liStyling: ''} style={removeMarker}><Link href='/'>Expenses</Link></li>
+        <li className={page === 'wallets' ? liStyling : ''} style={removeMarker}><Link href='/wallets'>Wallets</Link></li>
+        <li className={page === 'expenses' ? liStyling: ''} style={removeMarker}><Link href='/'>Expenses</Link></li>
       </ul>
     </header>
   )

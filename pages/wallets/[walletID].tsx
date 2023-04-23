@@ -22,7 +22,7 @@ const WalletActivities = () => {
   return (
     <>
       <main className='w-full'>
-        <Header headerOption={false}></Header>
+        <Header page='wallets' />
       </main>
       <div className="flex flex-col gap-4 p-4">
         <h1 className='text-cyan text-2xl'>{walletName}</h1>

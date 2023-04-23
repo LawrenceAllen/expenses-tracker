@@ -174,7 +174,7 @@ const Wallets = () => {
   
   return (
     <main>
-      <Header headerOption={false} />
+      <Header page='wallets' />
       <ClickAwayListener onClickAway={addFormClickAway}>
         <div className='p-4 pt-6'>
           {optionsVisibility

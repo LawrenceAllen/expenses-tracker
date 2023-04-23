@@ -145,7 +145,7 @@ const Home = () => {
   return (
     <>
       <main className='w-full'>
-        <Header headerOption={true}></Header>
+        <Header page='expenses' />
         {!isExistingWallet ? 
           <div className='flex flex-col gap-2 w-full py-8 px-4 mx-auto text-xl text-cyan'>
             <strong>Go to Wallets and add a wallet/account</strong>
