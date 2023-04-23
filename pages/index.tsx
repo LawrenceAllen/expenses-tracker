@@ -15,7 +15,7 @@ const Home = () => {
   const [isExistingWallet, setIsExistingWallet] = useState(false)
   const [isAddExpenseForm, setIsAddExpenseForm] = useState(false)
   const [addExpenseFormAnimation, setAddExpenseFormAnimation] = useState('')
-  const [dropdownTitle, setDropdownTitle] = useState('Choose Wallets')
+  const [dropdownTitle, setDropdownTitle] = useState('Wallets')
   const [amount, setAmount] = useState(0)
   const [transactionType, setTransactionType] = useState('')
   const [walletID, setWalletID] = useState('')
@@ -79,6 +79,9 @@ const Home = () => {
     if (isAddExpenseForm) {
       setIsAddExpenseForm(false)
       setAddExpenseFormAnimation('animate-expenseFormSwipeRight')
+      setAmount(0)
+      setDropdownTitle('Wallets')
+      setTransactionType('')
     } else {
       setIsAddExpenseForm(true)
       setAddExpenseFormAnimation('translate-x-[0px] animate-expenseFormSwipeLeft')
@@ -126,7 +129,7 @@ const Home = () => {
       id: 1,
       type: "number",
       labelName: "amount",
-      value: amount,
+      value: amount || '',
       placeholder: "Amount",
       required: true,
       onChange: setExpenseAmount
@@ -149,7 +152,6 @@ const Home = () => {
         {!isExistingWallet ? 
           <div className='flex flex-col gap-2 w-full py-8 px-4 mx-auto text-xl text-cyan'>
             <strong>Go to Wallets and add a wallet/account</strong>
-            <h2></h2>
             <p className='text-sm'>This is where you can enter or modify the amount that you have in your wallets/accounts</p>
           </div>
           : ''
@@ -160,7 +162,10 @@ const Home = () => {
           <ExpenseList expenses={expenses} />
         </div>
         <div className={addExpenseForm}>
-          <Form inputInfo={inputInfo} inputClassNames="border-orange-300 placeholder:text-gray-300 text-white">
+          <Form 
+            inputInfo={inputInfo} 
+            inputClassNames="border-orange-300 placeholder:text-gray-300 text-white"
+          >
             {warningText !== ''
               ? <WarningButton
                   onClick={clearWarningText} 
@@ -168,8 +173,8 @@ const Home = () => {
                   circularValue={circularValue}
                 />
               : <>
-                  <label htmlFor="walletUsed"></label>
                   <WalletDropdownList
+                    titleStyle='text-gray-300 border-orange-300'
                     listData={wallets}
                     title={dropdownTitle}
                     setWalletID={setWalletID}

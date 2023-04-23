@@ -19,11 +19,11 @@ type Form = {
 export const Form = ({children, className, inputInfo, inputClassNames}: Form) => {
 
   const classNames = twMerge('flex flex-col gap-4', className)
-  const inputStyling = twMerge('bg-none bg-transparent border-b-2 border-b-cyan placeholder:text-gray-500 active:outline-none bg-transparent focus:outline-none bg-transparent', inputClassNames)
+  const inputStyling = twMerge('bg-none bg-transparent border-b-2 border-b-black placeholder:text-gray-500 active:outline-none bg-transparent focus:outline-none bg-transparent', inputClassNames)
   
   if (inputInfo) {
     return (
-      <div>
+      <>
         {inputInfo.map((input) => (
           <div key={input.id} className={classNames}>
             <label htmlFor={input.labelName}></label>
@@ -31,7 +31,7 @@ export const Form = ({children, className, inputInfo, inputClassNames}: Form) =>
           </div>
         ))}
         {children}
-      </div>
+      </>
     )
   } else {
     return (

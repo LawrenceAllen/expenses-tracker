@@ -18,7 +18,7 @@ const Wallets = () => {
   const [newBalanceAmount, setNewBalanceAmount] = useState(0)
   const [warningText, setWarningText] = useState('')
  
-  const [dropdownTitle, setDropdownTitle] = useState('Choose Wallets')
+  const [dropdownTitle, setDropdownTitle] = useState('Wallets')
   const wallets = getWallets()
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Wallets = () => {
     if (addBalanceVisibility) {
       setAddBalanceVisibility(false)
       setOptionsVisibility(true)
-      setDropdownTitle('Choose Wallets')
+      setDropdownTitle('Wallets')
       setNewBalanceAmount(0)
     } else {
       setAddBalanceVisibility(true)
@@ -118,7 +118,7 @@ const Wallets = () => {
           balance: balance
         })
         toggleAddBalanceForm()
-        setDropdownTitle('Choose Wallets')
+        setDropdownTitle('Wallets')
       } else if (isNaN(newBalanceAmount)) {
         setWarningText('Please fill out amount')
       } else {

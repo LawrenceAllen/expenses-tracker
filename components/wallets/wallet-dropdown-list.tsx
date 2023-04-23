@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { NewWalletType } from "../../types/wallet"
 import DropdownList from "../global/list/dropdown_list"
 
@@ -7,32 +6,23 @@ type WalletDropdownListProps = {
   title: string
   setWalletID: (e: string) => void
   setDropdownTitle: (e: string) => void
-  className?: string
+  titleStyle?: string
+  listStyle?: string
 }
 
-export const WalletDropdownList = ({ listData, title, className, setWalletID, setDropdownTitle}: WalletDropdownListProps) => {
-  
-  const [showList, setShowList] = useState(false)
-
-  const toggleList = () => {
-    if (showList) {
-      setShowList(false)
-    } else {
-      setShowList(true)
-    }
-  }
+export const WalletDropdownList = ({ listData, title, titleStyle, listStyle, setWalletID, setDropdownTitle}: WalletDropdownListProps) => {
 
   const getWalletID = (item: any) => {
     setWalletID(item.id)
     setDropdownTitle(item.name)
-    toggleList()
   }
 
   return (
     <DropdownList  
       listData={listData} 
-      title={title} 
-      className={className} 
+      title={title}
+      titleStyle={titleStyle} 
+      listStyle={listStyle} 
       onItemClick={getWalletID}
     />
   )
