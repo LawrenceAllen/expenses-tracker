@@ -176,11 +176,11 @@ const Wallets = () => {
     <main>
       <Header headerOption={false} />
       <ClickAwayListener onClickAway={addFormClickAway}>
-        <div className='p-6'>
+        <div className='p-4 pt-6'>
           {optionsVisibility
             ? <div className='flex gap-2 justify-between align-center w-full'>
-                <Button onClick={toggleAddForm}><p>Add Wallet</p></Button>
-                <Button onClick={toggleAddBalanceForm}><p>Add Balance</p></Button>
+                <Button variant="add" onClick={toggleAddForm}><p>Add Wallet</p></Button>
+                <Button variant="add" onClick={toggleAddBalanceForm}><p>Add Balance</p></Button>
               </div>
             : ''
           }
