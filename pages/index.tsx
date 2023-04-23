@@ -135,8 +135,8 @@ const Home = () => {
             <p className='text-sm'>This is where you can enter or modify the amount that you have in your wallets/accounts</p>
           </div>
         : <div className='flex justify-between items-center'>
-            <div className='place-self-start w-full'>
-              <ExpenseList expenses={expenses} />
+            <div className='place-self-start w-full p-4'>
+              <ExpenseList expenses={expenses} listTitle='Expenses' walletID=''/>
             </div>
             <div className={addExpenseForm}>
               <Form 
