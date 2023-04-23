@@ -14,7 +14,7 @@ import { WalletDropdownList } from '../components/wallets/wallet-dropdown-list'
 const Home = () => {
   const [isExistingWallet, setIsExistingWallet] = useState(false)
   const [isAddExpenseForm, setIsAddExpenseForm] = useState(false)
-  const [addExpenseContainerWidth, setAddExpenseContainerWidth] = useState('w-14')
+  const [addExpenseFormAnimation, setAddExpenseFormAnimation] = useState('')
   const [dropdownTitle, setDropdownTitle] = useState('Choose Wallets')
   const [amount, setAmount] = useState(0)
   const [transactionType, setTransactionType] = useState('')
@@ -24,7 +24,7 @@ const Home = () => {
   const expenses = getExpenses()
   const wallets = getWallets()
 
-  const addExpenseContainer = twMerge('flex justify-between h-screen mb-20 bg-cyan', addExpenseContainerWidth)
+  const addExpenseForm = twMerge('absolute top-[70px] right-0 p-4 bg-cyan h-screen w-full z-10 translate-x-[32rem]', addExpenseFormAnimation)
 
   let value: number = 0;
   let interval: any;
@@ -36,14 +36,6 @@ const Home = () => {
       setIsExistingWallet(false)
     }
   }, [wallets])
-
-  useEffect(() => {
-    if (isAddExpenseForm) {
-      setAddExpenseContainerWidth('absolute top-[68px] right-0 w-full')
-    } else {
-      setAddExpenseContainerWidth('w-14')
-    }
-  }, [isAddExpenseForm])
 
   useEffect(() => {
     const warningTextTimeout = setTimeout(() => {
@@ -86,8 +78,10 @@ const Home = () => {
   const toggleAddExpenseForm = () => {
     if (isAddExpenseForm) {
       setIsAddExpenseForm(false)
+      setAddExpenseFormAnimation('animate-expenseFormSwipeRight')
     } else {
       setIsAddExpenseForm(true)
+      setAddExpenseFormAnimation('translate-x-[0px] animate-expenseFormSwipeLeft')
     }
   }
 
@@ -125,10 +119,6 @@ const Home = () => {
 
   const setExpenseTransactionType = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransactionType(e.currentTarget.value)
-  }
-
-  const setExpenseWalletID = (e: any) => {
-    setWalletID(e.target.value)
   }
 
   const inputInfo = [
@@ -169,38 +159,34 @@ const Home = () => {
         <div className='place-self-start w-full'>
           <ExpenseList expenses={expenses} />
         </div>
-        <div className={addExpenseContainer}>
-          {isAddExpenseForm 
-            ? <div className='w-full p-4'>
-                <Form inputInfo={inputInfo} inputClassNames="border-orange-300 placeholder:text-gray-300 text-white">
-                  {warningText !== ''
-                    ? <WarningButton
-                        onClick={clearWarningText} 
-                        warningText={warningText}
-                        circularValue={circularValue}
-                      />
-                    : <>
-                        <label htmlFor="walletUsed"></label>
-                        <WalletDropdownList
-                          listData={wallets}
-                          title={dropdownTitle}
-                          setWalletID={setWalletID}
-                          setDropdownTitle={setDropdownTitle}
-                        />
-                        <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
-                          <Button variant='add' onClick={addExpense}><p>Add</p></Button>
-                          <Button variant="cancel" onClick={toggleAddExpenseForm}><p>Cancel</p></Button>
-                        </div>                    
-                      </>
-                  }
-                </Form>
-              </div>
-            : <Button className='flex flex-col items-center gap-2 my-auto' onClick={toggleAddExpenseForm}>
-                <p className='text-orange-300 font-bold' style={{writingMode: "vertical-rl", textOrientation: "upright", textTransform: "uppercase"}}>add expense</p>
-                <MdOutlineAddCircleOutline size="30px" color="#fdba74"/>
-              </Button>
-          }
+        <div className={addExpenseForm}>
+          <Form inputInfo={inputInfo} inputClassNames="border-orange-300 placeholder:text-gray-300 text-white">
+            {warningText !== ''
+              ? <WarningButton
+                  onClick={clearWarningText} 
+                  warningText={warningText}
+                  circularValue={circularValue}
+                />
+              : <>
+                  <label htmlFor="walletUsed"></label>
+                  <WalletDropdownList
+                    listData={wallets}
+                    title={dropdownTitle}
+                    setWalletID={setWalletID}
+                    setDropdownTitle={setDropdownTitle}
+                  />
+                  <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
+                    <Button variant='add' onClick={addExpense}><p>Add</p></Button>
+                    <Button variant="cancel" onClick={toggleAddExpenseForm}><p>Cancel</p></Button>
+                  </div>                    
+                </>
+            }
+          </Form>
         </div>
+        <Button className='flex flex-col justify-center items-center gap-2 w-14 h-screen mb-20 bg-cyan rounded-none' onClick={toggleAddExpenseForm}>
+          <p className='text-orange-300 font-bold' style={{writingMode: "vertical-rl", textOrientation: "upright", textTransform: "uppercase"}}>add expense</p>
+          <MdOutlineAddCircleOutline size="30px" color="#fdba74"/>
+        </Button>
       </div>
     </>
   )
