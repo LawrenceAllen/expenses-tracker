@@ -24,7 +24,7 @@ const Home = () => {
   const expenses = getExpenses()
   const wallets = getWallets()
 
-  const addExpenseContainer = twMerge('rounded-none flex justify-between h-screen bg-cyan', addExpenseContainerWidth)
+  const addExpenseContainer = twMerge('flex justify-between h-screen mb-20 bg-cyan', addExpenseContainerWidth)
 
   let value: number = 0;
   let interval: any;
@@ -195,10 +195,10 @@ const Home = () => {
                   }
                 </Form>
               </div>
-            : <Button className='flex flex-col justify-center items-center gap-2' onClick={toggleAddExpenseForm}>
-              <p className='text-orange-300 font-bold' style={{writingMode: "vertical-rl", textOrientation: "upright", textTransform: "uppercase"}}>add expense</p>
-              <MdOutlineAddCircleOutline size="30px" color="#fdba74"/>
-            </Button>
+            : <Button className='flex flex-col items-center gap-2 my-auto' onClick={toggleAddExpenseForm}>
+                <p className='text-orange-300 font-bold' style={{writingMode: "vertical-rl", textOrientation: "upright", textTransform: "uppercase"}}>add expense</p>
+                <MdOutlineAddCircleOutline size="30px" color="#fdba74"/>
+              </Button>
           }
         </div>
       </div>
