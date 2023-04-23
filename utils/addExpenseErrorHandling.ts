@@ -1,8 +1,12 @@
 
 
 export const AddExpenseErrorHandling = (amount: number, transactionType: string, balance: number, setWarningText: (value: string) => void) => {
+  
   if (amount < 0 || amount === 0) {
     setWarningText("Enter a number higher than 0")
+    return false
+  } else if (isNaN(amount)) {
+    setWarningText("Please enter a number")
     return false
   } else if (transactionType === '') {
     setWarningText("Please enter transaction type")

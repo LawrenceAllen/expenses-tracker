@@ -10,6 +10,7 @@ import { setDoc, updateDoc, doc, serverTimestamp } from '@firebase/firestore'
 import { WarningButton } from '../components/global/button/warning_button'
 import { AddExpenseErrorHandling } from '../utils/addExpenseErrorHandling'
 import { WalletDropdownList } from '../components/wallets/wallet-dropdown-list'
+import { NewWalletType } from '../types/wallet'
  
 const Home = () => {
   const [isExistingWallet, setIsExistingWallet] = useState(false)
@@ -20,14 +21,10 @@ const Home = () => {
   const [transactionType, setTransactionType] = useState('')
   const [walletID, setWalletID] = useState('')
   const [warningText, setWarningText] = useState('')
-  const [circularValue, setCircularValue] = useState(0)
   const expenses = getExpenses()
   const wallets = getWallets()
 
   const addExpenseForm = twMerge('absolute top-[70px] right-0 p-4 bg-cyan h-screen w-full z-10 translate-x-[32rem]', addExpenseFormAnimation)
-
-  let value: number = 0;
-  let interval: any;
 
   useEffect(() => {
     if (wallets.length > 0) {
@@ -47,34 +44,6 @@ const Home = () => {
     }
   }, [warningText])
 
-  useEffect(() => {
-    if (warningText !== '') {
-      resetCounter();
-      interval = setInterval(function() {
-        if (value === 100) {
-          stopCounter()
-        }
-        value++
-        setCircularValue(value)
-      }, 30);
-    }
-
-    return () => {
-      resetCounter()
-    }
-
-  }, [warningText])
-
-  const stopCounter = () => {
-    clearInterval(interval);
-  }
-  
-  const resetCounter = () => {
-    stopCounter();
-    value = 0
-    setCircularValue(value)
-  }
-
   const toggleAddExpenseForm = () => {
     if (isAddExpenseForm) {
       setIsAddExpenseForm(false)
@@ -93,26 +62,38 @@ const Home = () => {
   }
 
   const addExpense = () => {
-    const highest = Math.max(...expenses.map(e => e.subid), 0)
-    const walletDocRef = doc(walletsColRef, walletID)
-    const wallet = wallets.find(e => e.id === walletID)
-    
-    const addExpenseErrorCheck = AddExpenseErrorHandling(amount, transactionType, wallet!.balance, setWarningText)
-    if (addExpenseErrorCheck) {
-      updateDoc(walletDocRef, {
-        balance: wallet!.balance - amount
-      })
-      setDoc(doc(db, 'expenses', '52416514195-' + (highest + 1).toString()), 
-        {
-          amount: amount,
-          transaction_date: serverTimestamp(),
-          transaction_type: transactionType,
-          wallet_id: walletID,
-          subid: highest + 1
-        }
-      )
-      toggleAddExpenseForm()
+    let walletDocRef: any
+    let wallet: NewWalletType | undefined
+
+    if (walletID !== '') {
+      walletDocRef = doc(walletsColRef, walletID)
+      wallet = wallets.find(e => e.id === walletID)
+    } else {
+      setWarningText('Please choose a wallet')
     }
+
+    const highest = Math.max(...expenses.map(e => e.subid), 0)
+    
+    if (wallet !== undefined) {
+      const addExpenseErrorCheck = AddExpenseErrorHandling(amount, transactionType, wallet.balance, setWarningText)
+      
+      if (addExpenseErrorCheck) {
+        updateDoc(walletDocRef, {
+          balance: wallet.balance - amount
+        })
+        setDoc(doc(db, 'expenses', '52416514195-' + (highest + 1).toString()), 
+          {
+            amount: amount,
+            transaction_date: serverTimestamp(),
+            transaction_type: transactionType,
+            wallet_id: walletID,
+            subid: highest + 1
+          }
+        )
+        toggleAddExpenseForm()
+      }
+    }
+    
   }
 
   const setExpenseAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,54 +127,50 @@ const Home = () => {
   ]
 
   return (
-    <>
-      <main className='w-full'>
-        <Header page='expenses' />
-        {!isExistingWallet ? 
-          <div className='flex flex-col gap-2 w-full py-8 px-4 mx-auto text-xl text-cyan'>
+    <main className='w-full'>
+      <Header page='expenses' />
+      {!isExistingWallet 
+        ? <div className='flex flex-col gap-2 w-full py-8 px-4 mx-auto text-xl text-cyan'>
             <strong>Go to Wallets and add a wallet/account</strong>
             <p className='text-sm'>This is where you can enter or modify the amount that you have in your wallets/accounts</p>
           </div>
-          : ''
-        }
-      </main>
-      <div className='flex justify-between items-center'>
-        <div className='place-self-start w-full'>
-          <ExpenseList expenses={expenses} />
-        </div>
-        <div className={addExpenseForm}>
-          <Form 
-            inputInfo={inputInfo} 
-            inputClassNames="border-orange-300 placeholder:text-gray-300 text-white"
-          >
-            {warningText !== ''
-              ? <WarningButton
-                  onClick={clearWarningText} 
-                  warningText={warningText}
-                  circularValue={circularValue}
-                />
-              : <>
-                  <WalletDropdownList
-                    titleStyle='text-gray-300 border-orange-300'
-                    listData={wallets}
-                    title={dropdownTitle}
-                    setWalletID={setWalletID}
-                    setDropdownTitle={setDropdownTitle}
-                  />
-                  <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
-                    <Button variant='add' onClick={addExpense}><p>Add</p></Button>
-                    <Button variant="cancel" onClick={toggleAddExpenseForm}><p>Cancel</p></Button>
-                  </div>                    
-                </>
-            }
-          </Form>
-        </div>
-        <Button className='flex flex-col justify-center items-center gap-2 w-14 h-screen mb-20 bg-cyan rounded-none' onClick={toggleAddExpenseForm}>
-          <p className='text-orange-300 font-bold' style={{writingMode: "vertical-rl", textOrientation: "upright", textTransform: "uppercase"}}>add expense</p>
-          <MdOutlineAddCircleOutline size="30px" color="#fdba74"/>
-        </Button>
-      </div>
-    </>
+        : <div className='flex justify-between items-center'>
+            <div className='place-self-start w-full'>
+              <ExpenseList expenses={expenses} />
+            </div>
+            <div className={addExpenseForm}>
+              <Form 
+                inputInfo={inputInfo} 
+                inputClassNames="border-orange-300 placeholder:text-gray-300 text-white"
+              >
+                {warningText !== ''
+                  ? <WarningButton
+                      onClick={clearWarningText} 
+                      warningText={warningText}
+                    />
+                  : <>
+                      <WalletDropdownList
+                        titleStyle='text-gray-300 border-orange-300'
+                        listData={wallets}
+                        title={dropdownTitle}
+                        setWalletID={setWalletID}
+                        setDropdownTitle={setDropdownTitle}
+                      />
+                      <div className='flex flex-col gap-2 justify-between align-center w-full mt-4'>
+                        <Button variant='add' onClick={addExpense}><p>Add</p></Button>
+                        <Button variant="cancel" onClick={toggleAddExpenseForm}><p>Cancel</p></Button>
+                      </div>                    
+                    </>
+                }
+              </Form>
+            </div>
+            <Button className='flex flex-col justify-center items-center gap-2 w-14 h-screen mb-20 bg-cyan rounded-none' onClick={toggleAddExpenseForm}>
+              <p className='text-orange-300 font-bold' style={{writingMode: "vertical-rl", textOrientation: "upright", textTransform: "uppercase"}}>add expense</p>
+              <MdOutlineAddCircleOutline size="30px" color="#fdba74"/>
+            </Button>
+          </div>
+      }
+    </main>
   )
 }
 
