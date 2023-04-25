@@ -41,8 +41,8 @@ export const DropdownList = ({ listData, title, titleStyle, listStyle, onItemCli
       {showList &&
         <List className={listStyles}>
           {listData.map((item: any) => (
-            <ClickAwayListener onClickAway={toggleList}>
-              <div key={item.id} id={item.id} className="select-none cursor-pointer flex items-center h-8 px-2 py-6 bg-orange-200 border-cyan hover:bg-orange-300" onClick={() => itemClickHandler(item)}>
+            <ClickAwayListener key={item.id} onClickAway={toggleList}>
+              <div id={item.id} className="select-none cursor-pointer flex items-center h-8 px-2 py-6 bg-orange-200 border-cyan hover:bg-orange-300" onClick={() => itemClickHandler(item)}>
                 <p>{item.name}</p>
               </div>
             </ClickAwayListener> 
