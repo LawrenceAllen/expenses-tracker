@@ -66,9 +66,12 @@ export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wal
           style={{listStyleType: "none"}} 
           className={classNames}
         >
-          <div className='flex justify-between items-center'>
+          <div className='flex justify-between items-center w-full'>
             <Text className="text-2xl" text={transaction_type} />
-            {!isHideWalletName && <Text className="text-xl" text={walletName} />}
+            {walletName 
+              ? <Text className="text-md place-self-end" text={walletName} /> 
+              : <Text className="italic text-sm text-red-500 place-self-end" text='Wallet Deleted' />
+            }
           </div>
           <Text text={`Amount: ₱${amount}`} />
           <Text text={date} />

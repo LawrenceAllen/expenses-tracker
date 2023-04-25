@@ -1,26 +1,16 @@
-import { useEffect } from 'react'
 import { ExpensesArray, NewExpenseType } from "../../types/expense"
 import { List } from "../global"
 import { twMerge } from 'tailwind-merge'
-import { useRouter } from "next/router"
-import ExpenseCard from "./expense-card"
+import { ExpenseCard } from "./expense-card"
 
 export const ExpenseList = ({expenses, className, listTitle, walletID}: ExpensesArray) => {
 
   const classNames = twMerge('overflow-y-auto h-screen py-4', className)
 
-  const router = useRouter()
-
-  useEffect(() => {
-    if (listTitle === '') {
-      router.push('/404')
-    }
-  }, [listTitle])
-
   return(
     <>
       {walletID === ''
-        ? <div>
+        ? <>
             <h1 className="text-3xl text-cyan mb-2">{listTitle}</h1>
             <List className={classNames}>
               {expenses.map((expense: NewExpenseType) => (
@@ -35,8 +25,8 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
                 />
               ))}
             </List>
-          </div>
-        : <div>
+          </>
+        : <>
             <h1 className="text-3xl text-cyan mb-2">{listTitle}</h1>
             <List className={classNames}>
               {expenses.map((expense: NewExpenseType) => {
@@ -53,7 +43,7 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
                 }
               })}
             </List>
-          </div>
+          </>
       }
     </>
   )
