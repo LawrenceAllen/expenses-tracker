@@ -24,7 +24,7 @@ const Home = () => {
   const expenses = getExpenses()
   const wallets = getWallets()
 
-  const addExpenseForm = twMerge('absolute top-[70px] right-0 p-4 bg-cyan h-screen w-full z-10 translate-x-[32rem]', addExpenseFormAnimation)
+  const addExpenseForm = twMerge('absolute top-[70px] right-0 p-4 bg-cyan h-screen w-full z-10 translate-x-[100%]', addExpenseFormAnimation)
 
   useEffect(() => {
     if (wallets.length > 0) {

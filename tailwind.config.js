@@ -20,12 +20,12 @@ module.exports = {
           '100%' : { transform: 'translateY(0px)' },
         },
         expenseFormSwipeLeft: {
-          '0%': { transform: 'translateX(32rem)' },
+          '0%': { transform: 'translateX(100%)' },
           '100%' : { transform: 'translateX(0px)' },
         },
         expenseFormSwipeRight: {
           '0%': { transform: 'translateX(0px)' },
-          '100%' : { transform: 'translateX(32rem)' },
+          '100%' : { transform: 'translateX(100%)' },
         },
       },
       animation: {
