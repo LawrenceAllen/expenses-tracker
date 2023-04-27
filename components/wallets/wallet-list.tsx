@@ -1,15 +1,17 @@
+import { useWallet } from "../../hooks/useWallet"
 import { NewWalletType } from "../../types/wallet"
 import { List } from "../global"
 import WalletCard from "./wallet-card"
 
 type WalletList = {
-  wallets: NewWalletType[]
   className?: string
   warningText: string
   setWarningText: (value: string) => void
 }
 
-export const WalletList = ({wallets, className, warningText, setWarningText}: WalletList) => {
+export const WalletList = ({className, warningText, setWarningText}: WalletList) => {
+
+  const wallets = useWallet()
 
   return(
     <div className="p-4">
