@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { setDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore'
 import { db } from '../../firebase.config'
 import { CustomCircularProgressbar } from '../../components/global/progressbar/circular-progress-bar'
@@ -171,6 +171,8 @@ const Wallets = () => {
       onChange: setNewWalletBalance
     }
   ]
+
+  const WalletListComponent = useMemo(() => <WalletList className="gap-4" wallets={wallets} warningText={warningText} setWarningText={setWarningText}/>, [wallets])
   
   return (
     <main>
@@ -221,7 +223,7 @@ const Wallets = () => {
           }
         </div>
       </ClickAwayListener>
-      <WalletList className="gap-4" wallets={wallets} warningText={warningText} setWarningText={setWarningText}/>
+      {WalletListComponent}
     </main>
   )
 }
