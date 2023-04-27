@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { db } from '../firebase.config'
-import { collection, onSnapshot, QuerySnapshot, DocumentData, CollectionReference} from '@firebase/firestore'
+import { collection, onSnapshot, QuerySnapshot, DocumentData} from '@firebase/firestore'
 import { NewExpenseType } from '../types/expense'
 
 export function getExpenses() {
@@ -22,7 +22,7 @@ export function getExpenses() {
         }).sort((a, b) => b.transaction_date - a.transaction_date)
       )}),
     []
-  );
+  )
 
   return expenses
 }
