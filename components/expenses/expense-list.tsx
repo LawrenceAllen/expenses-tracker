@@ -13,7 +13,7 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
         ? <>
             <h1 className="text-3xl text-cyan mb-2">{listTitle}</h1>
             <List className={classNames}>
-              {expenses.map((expense: NewExpenseType) => (
+              {expenses.map((expense: NewExpenseType) => 
                 <ExpenseCard
                   key={expense.id}
                   className="rounded-md"
@@ -23,25 +23,25 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
                   transaction_type={expense.transaction_type}
                   wallet_id={expense.wallet_id}
                 />
-              ))}
+              )}
             </List>
           </>
         : <>
             <h1 className="text-3xl text-cyan mb-2">{listTitle}</h1>
             <List className={classNames}>
-              {expenses.map((expense: NewExpenseType) => {
-                if (expense.wallet_id === walletID) {
-                  return <ExpenseCard
-                    key={expense.id}
-                    id={expense.id}
-                    amount={expense.amount}
-                    transaction_date={expense.transaction_date}
-                    transaction_type={expense.transaction_type}
-                    wallet_id={expense.wallet_id}
-                    isHideWalletName={true}
-                  />
-                }
-              })}
+            {expenses
+              .filter((expense: NewExpenseType) => expense.wallet_id === walletID)
+              .map((expense: NewExpenseType) => 
+                <ExpenseCard
+                  key={expense.id}
+                  id={expense.id}
+                  amount={expense.amount}
+                  transaction_date={expense.transaction_date}
+                  transaction_type={expense.transaction_type}
+                  wallet_id={expense.wallet_id}
+                />
+              )
+            }
             </List>
           </>
       }

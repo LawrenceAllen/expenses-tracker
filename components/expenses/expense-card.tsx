@@ -11,10 +11,10 @@ type ExpenseCard = {
   wallet_id: string
   className?: string
   type?: string 
-  isHideWalletName?: boolean
 }
 
-export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wallet_id, className, type, isHideWalletName}: ExpenseCard) => {
+export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wallet_id, className, type}: ExpenseCard) => {
+  
   const normalDateOptions = {month: 'long', day: 'numeric', year: 'numeric'}
   const weekdayOptions = {weekday: 'long'}
   const timeOptions = {hour: 'numeric', minute: 'numeric'}

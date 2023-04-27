@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import { NewWalletType } from "../../types/wallet"
 import { Text, List, Button, Form } from "../global"
@@ -87,6 +87,38 @@ export const WalletCard = ({wallet, setWarningText}: WalletCard) => {
       onChange: setNewWalletName
     },
   ]
+
+  const MiniExpensesList = useMemo(() => 
+    <List className="gap-0">
+      {firstTwoExpenses
+        .filter((expense: NewExpenseType) => expense.wallet_id === wallet.id)
+        .map((e: NewExpenseType) => 
+          <ExpenseCard 
+            key={e.id}
+            className="bg-transparent px-4 py-2 rounded-tr-[0px] rounded-tl-[0px] first:pt-6"
+            id={e.id}
+            amount={e.amount}
+            transaction_date={e.transaction_date}
+            transaction_type={e.transaction_type}
+            wallet_id={e.wallet_id}
+            type="preview"
+          />
+        )
+      }
+    </List>
+  , [firstTwoExpenses])
+
+  const ViewAllButton = useMemo(() => 
+    <>
+      {firstTwoExpenses.length >= 2 &&
+        <Link className="block mt-3" href={`wallets/${wallet.id}`}>
+          <Button className="bg-orange-100 border-[1px] border-orange-200 rounded-tl-[0px] rounded-tr-[0px] shadow-sm">
+            <p className="text-cyan text-center">View all</p>
+          </Button>
+        </Link>
+      }
+    </>
+  , [firstTwoExpenses])
   
   return (
     <ClickAwayListener onClickAway={closeWalletOptions}>
@@ -132,29 +164,8 @@ export const WalletCard = ({wallet, setWarningText}: WalletCard) => {
           }
         </div>
         <div className={`${listContainerAnim}`}>
-          <List className="gap-0">
-            {firstTwoExpenses?.map((e: NewExpenseType) => {
-              if (e.wallet_id === wallet.id) {
-                return <ExpenseCard 
-                  key={e.id}
-                  className="bg-transparent px-4 py-2 rounded-tr-[0px] rounded-tl-[0px] first:pt-6"
-                  id={e.id}
-                  amount={e.amount}
-                  transaction_date={e.transaction_date}
-                  transaction_type={e.transaction_type}
-                  wallet_id={e.wallet_id}
-                  type="preview"
-                />
-              }
-          })}
-          </List>
-          {firstTwoExpenses?.length >= 2 &&
-            <Link className="block mt-3" href={`wallets/${wallet.id}`}>
-              <Button className="bg-orange-100 border-[1px] border-orange-200 rounded-tl-[0px] rounded-tr-[0px] shadow-sm">
-                <p className="text-cyan text-center">View all</p>
-              </Button>
-            </Link>
-          }
+          {MiniExpensesList}
+          {ViewAllButton}
         </div>
       </div>
     </ClickAwayListener>
