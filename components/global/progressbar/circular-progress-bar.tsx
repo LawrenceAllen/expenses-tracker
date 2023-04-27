@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 export const CustomCircularProgressbar = ({warningText}: {warningText: string}) => {
   const [circularValue, setCircularValue] = useState(0)
 
-  let circularTempValue: number = 0; // value used by circular progressbar
-  let interval: any; // ID for setInterval function use by circular progressbar
+  let circularTempValue: number = 0 // value used by circular progressbar
+  let interval: any // ID for setInterval function use by circular progressbar
 
   useEffect(() => {
     if (warningText !== '') {
-      resetCounter();
+      resetCounter()
       interval = setInterval(function() {
         if (circularTempValue === 100) {
           stopCounter()
         }
         setCircularValue(circularTempValue += 1)
-      }, 30);
+      }, 30)
     }
 
     return () => {
@@ -26,11 +26,11 @@ export const CustomCircularProgressbar = ({warningText}: {warningText: string}) 
   }, [warningText])
 
   const stopCounter = () => {
-    clearInterval(interval);
+    clearInterval(interval)
   }
   
   const resetCounter = () => {
-    stopCounter();
+    stopCounter()
     circularTempValue = 0
     setCircularValue(circularTempValue)
   }

@@ -12,19 +12,19 @@ export const WarningButton = ({onClick, warningText, className}: WarningButton) 
 
   const [circularValue, setCircularValue] = useState(0)
 
-  let value: number = 0;
-  let interval: any;
+  let value: number = 0
+  let interval: any
 
   useEffect(() => {
     if (warningText !== '') {
-      resetCounter();
+      resetCounter()
       interval = setInterval(function() {
         if (value === 100) {
           stopCounter()
         }
         value++
         setCircularValue(value)
-      }, 30);
+      }, 30)
     }
 
     return () => {
@@ -34,11 +34,11 @@ export const WarningButton = ({onClick, warningText, className}: WarningButton) 
   }, [warningText])
 
   const stopCounter = () => {
-    clearInterval(interval);
+    clearInterval(interval)
   }
   
   const resetCounter = () => {
-    stopCounter();
+    stopCounter()
     value = 0
     setCircularValue(value)
   }

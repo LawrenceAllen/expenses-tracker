@@ -18,7 +18,7 @@ export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wal
   const normalDateOptions = {month: 'long', day: 'numeric', year: 'numeric'}
   const weekdayOptions = {weekday: 'long'}
   const timeOptions = {hour: 'numeric', minute: 'numeric'}
-  const wallets = getWallets();
+  const wallets = getWallets()
 
   const [walletName, setWalletName] = useState('')
   const [date, setDate] = useState('')
