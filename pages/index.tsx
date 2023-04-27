@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Header, Button, Form } from '../components/global'
 import { ExpenseList } from "../components/expenses/expense-list"
 import { getWallets } from '../utils/getWallets'
@@ -126,6 +126,10 @@ const Home = () => {
     }
   ]
 
+  const ExpenseListComponent = useMemo(() => (
+    <ExpenseList expenses={expenses} listTitle='Expenses' walletID=''/>
+  ), [expenses])
+
   return (
     <main className='w-full'>
       <Header page='expenses' />
@@ -136,7 +140,7 @@ const Home = () => {
           </div>
         : <div className='flex justify-between items-center'>
             <div className='place-self-start w-full p-4'>
-              <ExpenseList expenses={expenses} listTitle='Expenses' walletID=''/>
+              {ExpenseListComponent}
             </div>
             <div className={addExpenseForm}>
               <Form 
