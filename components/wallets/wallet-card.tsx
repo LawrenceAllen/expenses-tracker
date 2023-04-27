@@ -18,7 +18,7 @@ type WalletCard = {
   setWarningText: (value: string) => void
 }
 
-export const WalletCard = ({wallet, warningText, setWarningText}: WalletCard) => {
+export const WalletCard = ({wallet, setWarningText}: WalletCard) => {
 
   const [arrowVisibility, setArrowVisibility] = useState(true)
   const [isNameChange, setIsNameChange] = useState(false)
@@ -46,9 +46,11 @@ export const WalletCard = ({wallet, warningText, setWarningText}: WalletCard) =>
   }
 
   const closeWalletOptions = () => {
-    setRemoveButtonAnimation('hidden')
-    setWidthAnimation('hidden')
-    setArrowVisibility(true)
+    if (!arrowVisibility) {
+      setRemoveButtonAnimation('hidden')
+      setWidthAnimation('hidden')
+      setArrowVisibility(true)
+    }
   }
 
   const updateWalletName = (e : React.FormEvent<HTMLFormElement>) => {
