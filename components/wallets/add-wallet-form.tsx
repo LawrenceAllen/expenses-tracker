@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { db } from '../../firebase.config'
 import { setDoc, doc, serverTimestamp } from '@firebase/firestore'
 import { useWallet } from "../../hooks/useWallet"
@@ -5,33 +6,39 @@ import { Button, Form } from "../global"
 import { CustomCircularProgressbar } from '../global/progressbar/circular-progress-bar'
 
 type AddWalletForm = {
-  name: string
-  balance: number
-  setWalletName: (e: any) => void
-  setWalletBalance: (e: any) => void
   addFormVisibility: boolean
   warningText: string
   setWarningText: (e: string) => void
   toggleAddWalletForm: () => void
   clearWarningText: () => void
-  clearAddWalletForm: (e?: string) => void
 }
 
 const AddWalletForm = ({
-  name, 
-  balance,
-  setWalletName, 
-  setWalletBalance,
   addFormVisibility,
   warningText, 
   setWarningText, 
   toggleAddWalletForm,
   clearWarningText,
-  clearAddWalletForm, 
 }: AddWalletForm
 ) => {
+  const [name, setName] = useState('')
+  const [balance, setBalance] = useState(0)
 
   const wallets = useWallet()
+
+  useEffect(() => {
+    if (!addFormVisibility) {
+      clearAddWalletForm()
+    }
+  }, [addFormVisibility])
+
+  const setWalletName = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.currentTarget.value)
+  }
+
+  const setWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setBalance(parseInt(e.currentTarget.value))
+  }
 
   const addWallet = (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -61,6 +68,17 @@ const AddWalletForm = ({
       )
       toggleAddWalletForm()
       clearAddWalletForm()
+    }
+  }
+
+  const clearAddWalletForm = (string?: string) => {
+    if (string === 'name') {
+      setName('')
+    } else if (string === 'balance') {
+      setBalance(0)
+    } else {
+      setName('')
+      setBalance(0)
     }
   }
 

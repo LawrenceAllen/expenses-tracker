@@ -11,8 +11,6 @@ const Wallets = () => {
   const [addFormVisibility, setAddFormVisibility] = useState(false)
   const [addBalanceVisibility, setAddBalanceVisibility] = useState(false)
   const [walletID, setWalletID] = useState('') 
-  const [name, setName] = useState('')
-  const [balance, setBalance] = useState(0)
   const [newBalanceAmount, setNewBalanceAmount] = useState(0)
   const [warningText, setWarningText] = useState('')
   const [dropdownTitle, setDropdownTitle] = useState('Wallets')
@@ -33,7 +31,6 @@ const Wallets = () => {
     if (addFormVisibility) {
       setAddFormVisibility(false)
       setOptionsVisibility(true)
-      clearAddWalletForm()
     } else {
       setAddFormVisibility(true)
       setOptionsVisibility(false)
@@ -62,17 +59,6 @@ const Wallets = () => {
     warningText !== '' && setWarningText('')
   }
 
-  const clearAddWalletForm = (string?: string) => {
-    if (string === 'name') {
-      setName('')
-    } else if (string === 'balance') {
-      setBalance(0)
-    } else {
-      setName('')
-      setBalance(0)
-    }
-  }
-
   const clearAddBalanceForm = (string?: string) => {
     if (string === 'newBalanceAmount') {
       setNewBalanceAmount(0)
@@ -80,14 +66,6 @@ const Wallets = () => {
       setNewBalanceAmount(0)
       setDropdownTitle('Wallets')
     }
-  }
-
-  const setWalletName = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.currentTarget.value)
-  }
-
-  const setWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setBalance(parseInt(e.currentTarget.value))
   }
 
   const setNewWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -114,16 +92,11 @@ const Wallets = () => {
           }
           <WalletProvider>
             <AddWalletForm 
-              name={name} 
-              balance={balance} 
-              setWalletName={setWalletName}  
-              setWalletBalance={setWalletBalance} 
               addFormVisibility={addFormVisibility} 
               warningText={warningText}  
               setWarningText={setWarningText} 
               toggleAddWalletForm={toggleAddWalletForm} 
               clearWarningText={clearWarningText} 
-              clearAddWalletForm={clearAddWalletForm}  
             />
             <AddBalanceForm
               dropdownTitle={dropdownTitle} 
