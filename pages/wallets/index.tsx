@@ -7,13 +7,9 @@ import WalletList from '../../components/wallets/wallet-list'
 import AddBalanceForm from '../../components/wallets/add-balance-form'
 
 const Wallets = () => {
-  const [optionsVisibility, setOptionsVisibility] = useState(true) 
   const [addFormVisibility, setAddFormVisibility] = useState(false)
   const [addBalanceVisibility, setAddBalanceVisibility] = useState(false)
-  const [walletID, setWalletID] = useState('') 
-  const [newBalanceAmount, setNewBalanceAmount] = useState(0)
   const [warningText, setWarningText] = useState('')
-  const [dropdownTitle, setDropdownTitle] = useState('Wallets')
 
   const wallets = useWallet()
 
@@ -30,46 +26,27 @@ const Wallets = () => {
   const toggleAddWalletForm = () => {
     if (addFormVisibility) {
       setAddFormVisibility(false)
-      setOptionsVisibility(true)
     } else {
       setAddFormVisibility(true)
-      setOptionsVisibility(false)
     }
   }
 
   const toggleAddBalanceForm = () => {
     if (addBalanceVisibility) {
       setAddBalanceVisibility(false)
-      setOptionsVisibility(true)
-      clearAddBalanceForm()
     } else {
       setAddBalanceVisibility(true)
-      setOptionsVisibility(false)
     }
   }
 
-  const addFormClickAway = () => {
+  const addFormsClickAway = () => {
     setAddFormVisibility(false)
     setAddBalanceVisibility(false)
-    setOptionsVisibility(true)
     clearWarningText()
   }
 
   const clearWarningText = () => {
     warningText !== '' && setWarningText('')
-  }
-
-  const clearAddBalanceForm = (string?: string) => {
-    if (string === 'newBalanceAmount') {
-      setNewBalanceAmount(0)
-    } else {
-      setNewBalanceAmount(0)
-      setDropdownTitle('Wallets')
-    }
-  }
-
-  const setNewWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setNewBalanceAmount(parseInt(e.currentTarget.value))
   }
 
   const WalletListComponent = useMemo(() =>
@@ -81,9 +58,9 @@ const Wallets = () => {
   return (
     <main>
       <Header page='wallets' />
-      <ClickAwayListener onClickAway={addFormClickAway}>
+      <ClickAwayListener onClickAway={addFormsClickAway}>
         <div className='p-4 pt-6'>
-          {optionsVisibility
+          {!addFormVisibility && !addBalanceVisibility
             ? <div className='flex gap-2 justify-between align-center w-full'>
                 <Button variant="add" onClick={toggleAddWalletForm}><p>Add Wallet</p></Button>
                 <Button variant="add" onClick={toggleAddBalanceForm}><p>Add Balance</p></Button>
@@ -99,18 +76,11 @@ const Wallets = () => {
               clearWarningText={clearWarningText} 
             />
             <AddBalanceForm
-              dropdownTitle={dropdownTitle} 
-              newBalanceAmount={newBalanceAmount}  
-              walletID={walletID} 
-              setDropdownTitle={setDropdownTitle} 
-              setNewWalletBalance={setNewWalletBalance} 
-              setWalletID={setWalletID} 
               addBalanceVisibility={addBalanceVisibility} 
               warningText={warningText} 
               setWarningText={setWarningText} 
               toggleAddBalanceForm={toggleAddBalanceForm} 
               clearWarningText={clearWarningText} 
-              clearAddBalanceForm={clearAddBalanceForm} 
             />
           </WalletProvider>
         </div>

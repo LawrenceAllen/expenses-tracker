@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { updateDoc, doc } from "@firebase/firestore"
 import { useWallet } from "../../hooks/useWallet"
 import { Form, Button } from "../global"
@@ -6,49 +7,38 @@ import { WalletDropdownList } from "./wallet-dropdown-list"
 import { db } from "../../firebase.config"
 
 type AddBalanceForm = {
-  dropdownTitle: string
-  newBalanceAmount: number
-  walletID: string
-  setDropdownTitle: (e: string) => void
-  setNewWalletBalance: (e: any) => void
-  setWalletID: (e: string) => void
   addBalanceVisibility: boolean
   warningText: string
   setWarningText: (e: string) => void
   toggleAddBalanceForm: () => void
   clearWarningText: () => void
-  clearAddBalanceForm: (e?: string) => void
 }
 
 const AddBalanceForm = ({
-  dropdownTitle,
-  newBalanceAmount, 
-  walletID,
-  setDropdownTitle,
-  setNewWalletBalance,
-  setWalletID,
   addBalanceVisibility,
   warningText,
   setWarningText,
   toggleAddBalanceForm,
   clearWarningText,
-  clearAddBalanceForm,
 }: AddBalanceForm
 ) => {
+  
+  const [newBalanceAmount, setNewBalanceAmount] = useState(0)
+  const [dropdownTitle, setDropdownTitle] = useState('Wallets')
+  const [walletID, setWalletID] = useState('') 
 
   const wallets = useWallet()
-  
-  const addBalanceInputInfo = [
-    {
-      id: 1,
-      type: "number",
-      labelName: "amount",
-      value: newBalanceAmount || '',
-      placeholder: "Amount",
-      required: true,
-      onChange: setNewWalletBalance
+
+  useEffect(() => {
+    if (!addBalanceVisibility) {
+      clearAddBalanceForm()
     }
-  ]
+  }, [addBalanceVisibility])
+  
+
+  const setNewWalletBalance = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setNewBalanceAmount(parseInt(e.currentTarget.value))
+  }
 
   const updateBalance = () => {
     if (walletID === '') {
@@ -67,6 +57,27 @@ const AddBalanceForm = ({
       clearAddBalanceForm()
     }
   }
+
+  const clearAddBalanceForm = (string?: string) => {
+    if (string === 'newBalanceAmount') {
+      setNewBalanceAmount(0)
+    } else {
+      setNewBalanceAmount(0)
+      setDropdownTitle('Wallets')
+    }
+  }
+
+  const addBalanceInputInfo = [
+    {
+      id: 1,
+      type: "number",
+      labelName: "amount",
+      value: newBalanceAmount || '',
+      placeholder: "Amount",
+      required: true,
+      onChange: setNewWalletBalance
+    }
+  ]
 
   return (
     <>
