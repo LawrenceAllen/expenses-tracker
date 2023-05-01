@@ -54,7 +54,7 @@ export const WalletCard = ({wallet, setWarningText}: WalletCard) => {
   
   return (
     <ClickAwayListener onClickAway={closeWalletOptions}>
-      <div className="w-full flex flex-col gap-2 mt-2 first:mt-0 items-center">
+      <div className="w-full flex flex-col gap-2 mt-4 first:mt-0 items-center">
         <RemoveWalletButton className={removeButtonAnimation} wallet={wallet}/>
         <WalletCardInfo 
           wallet={wallet}

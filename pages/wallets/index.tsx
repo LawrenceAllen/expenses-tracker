@@ -51,7 +51,7 @@ const Wallets = () => {
 
   const WalletListComponent = useMemo(() =>
     <WalletProvider>
-      <WalletList className="gap-4" warningText={warningText} setWarningText={setWarningText}/>
+      <WalletList className="gap-2" warningText={warningText} setWarningText={setWarningText}/>
     </WalletProvider>
   , [wallets])
   
