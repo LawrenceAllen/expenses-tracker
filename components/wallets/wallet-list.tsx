@@ -14,8 +14,7 @@ export const WalletList = ({className, warningText, setWarningText}: WalletList)
   const wallets = useWallet()
 
   return(
-    <div className="p-4">
-      <h1 className="text-3xl text-cyan mb-2">Wallets</h1>
+    <div className="p-4 pt-0">
       <List className={className}>
         {wallets.map((wallet: NewWalletType) => (
           <WalletCard 

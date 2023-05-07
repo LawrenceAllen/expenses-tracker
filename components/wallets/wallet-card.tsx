@@ -32,7 +32,7 @@ export const WalletCard = ({wallet, setWarningText}: WalletCard) => {
 
   const openWalletOptions = () => {
     setViewAllExpenseAnimation('animate-viewAllButtonWidthDown')
-    setRemoveButtonAnimation('translate-y-[0px] animate-removeButtonUp max-h-[1000px]')
+    setRemoveButtonAnimation('translate-y-[0px] animate-removeButtonUp max-h-[1000px] mt-4')
     setArrowVisibility(false)
   }
 

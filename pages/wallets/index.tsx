@@ -51,7 +51,7 @@ const Wallets = () => {
 
   const WalletListComponent = useMemo(() =>
     <WalletProvider>
-      <WalletList className="gap-2" warningText={warningText} setWarningText={setWarningText}/>
+      <WalletList className="gap-0" warningText={warningText} setWarningText={setWarningText}/>
     </WalletProvider>
   , [wallets])
   
@@ -59,7 +59,7 @@ const Wallets = () => {
     <main>
       <Header page='wallets' />
       <ClickAwayListener onClickAway={addFormsClickAway}>
-        <div className='p-4 pt-6'>
+        <div className='p-4 pt-4'>
           {!addFormVisibility && !addBalanceVisibility
             ? <div className='flex gap-2 justify-between align-center w-full'>
                 <Button variant="add" onClick={toggleAddWalletForm}><p>Add Wallet</p></Button>
