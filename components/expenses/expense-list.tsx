@@ -5,13 +5,26 @@ import { ExpenseCard } from "./expense-card"
 
 export const ExpenseList = ({expenses, className, listTitle, walletID}: ExpensesArray) => {
 
-  const classNames = twMerge('overflow-y-auto h-screen py-4', className)
+  const classNames = twMerge(`overflow-y-auto h-screen ${listTitle && 'py-4'}`, className)
 
-  return(
+  const ListTitle = () => {
+    return (
+      <>
+        {listTitle 
+          ? <h1 className="text-3xl text-cyan mb-2">
+              {listTitle && listTitle}
+            </h1> 
+          : null
+        }
+      </>
+    )
+  }
+
+  return (
     <>
       {walletID === ''
         ? <>
-            <h1 className="text-3xl text-cyan mb-2">{listTitle}</h1>
+            <ListTitle />
             <List className={classNames}>
               {expenses.map((expense: NewExpenseType) => 
                 <ExpenseCard
@@ -27,7 +40,7 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
             </List>
           </>
         : <>
-            <h1 className="text-3xl text-cyan mb-2">{listTitle}</h1>
+            <ListTitle />
             <List className={classNames}>
             {expenses
               .filter((expense: NewExpenseType) => expense.wallet_id === walletID)

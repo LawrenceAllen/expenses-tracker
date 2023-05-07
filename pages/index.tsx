@@ -127,7 +127,7 @@ const Home = () => {
   ]
 
   const ExpenseListComponent = useMemo(() => (
-    <ExpenseList expenses={expenses} listTitle='Expenses' walletID=''/>
+    <ExpenseList expenses={expenses} walletID=''/>
   ), [expenses])
 
   return (
@@ -135,8 +135,8 @@ const Home = () => {
       <Header page='expenses' />
       {!isExistingWallet 
         ? <div className='flex flex-col gap-2 w-full py-8 px-4 mx-auto text-xl text-cyan'>
-            <strong>Go to Wallets and add a wallet/account</strong>
-            <p className='text-sm'>This is where you can enter or modify the amount that you have in your wallets/accounts</p>
+            <strong>Go to Wallets and add a wallet</strong>
+            <p className='text-sm'>This is where you can add your expenses</p>
           </div>
         : <div className='flex justify-between items-center'>
             <div className='place-self-start w-full p-4'>

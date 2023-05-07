@@ -1,7 +1,7 @@
 export interface ExpensesArray {
   expenses: NewExpenseType[]
   className?: string
-  listTitle: string
+  listTitle?: string
   walletID: string | string[] | undefined
 }
 
