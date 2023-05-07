@@ -22,7 +22,7 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
 
   return (
     <>
-      {walletID === ''
+      {walletID === undefined
         ? <>
             <ListTitle />
             <List className={classNames}>

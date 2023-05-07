@@ -127,7 +127,7 @@ const Home = () => {
   ]
 
   const ExpenseListComponent = useMemo(() => (
-    <ExpenseList expenses={expenses} walletID=''/>
+    <ExpenseList expenses={expenses} />
   ), [expenses])
 
   return (

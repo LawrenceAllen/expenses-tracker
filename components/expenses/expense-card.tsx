@@ -74,7 +74,7 @@ export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wal
             }
           </div>
           <Text text={`Amount: ₱${amount}`} />
-          <Text text={date} />
+          <Text text={`Date Added: ${date}`} />
         </li>
       }
     </>
