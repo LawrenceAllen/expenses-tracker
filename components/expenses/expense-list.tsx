@@ -5,15 +5,15 @@ import { ExpenseCard } from "./expense-card"
 
 export const ExpenseList = ({expenses, className, listTitle, walletID}: ExpensesArray) => {
 
-  const classNames = twMerge(`overflow-y-auto h-screen ${listTitle && 'py-4'}`, className)
+  const classNames = twMerge('flex-1 relative z-0 overflow-y-auto h-screen', className)
 
   const ListTitle = () => {
     return (
       <>
         {listTitle 
-          ? <h1 className="text-3xl text-cyan mb-2">
-              {listTitle && listTitle}
-            </h1> 
+          ? <h1 className="text-3xl text-cyan">
+              {listTitle}
+            </h1>
           : null
         }
       </>
@@ -29,7 +29,6 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
               {expenses.map((expense: NewExpenseType) => 
                 <ExpenseCard
                   key={expense.id}
-                  className="rounded-md"
                   id={expense.id}
                   amount={expense.amount}
                   transaction_date={expense.transaction_date}
@@ -42,19 +41,19 @@ export const ExpenseList = ({expenses, className, listTitle, walletID}: Expenses
         : <>
             <ListTitle />
             <List className={classNames}>
-            {expenses
-              .filter((expense: NewExpenseType) => expense.wallet_id === walletID)
-              .map((expense: NewExpenseType) => 
-                <ExpenseCard
-                  key={expense.id}
-                  id={expense.id}
-                  amount={expense.amount}
-                  transaction_date={expense.transaction_date}
-                  transaction_type={expense.transaction_type}
-                  wallet_id={expense.wallet_id}
-                />
-              )
-            }
+              {expenses
+                .filter((expense: NewExpenseType) => expense.wallet_id === walletID)
+                .map((expense: NewExpenseType) => 
+                  <ExpenseCard
+                    key={expense.id}
+                    id={expense.id}
+                    amount={expense.amount}
+                    transaction_date={expense.transaction_date}
+                    transaction_type={expense.transaction_type}
+                    wallet_id={expense.wallet_id}
+                  />
+                )
+              }
             </List>
           </>
       }

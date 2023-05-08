@@ -23,7 +23,7 @@ export const ExpenseCard = ({id, amount, transaction_date, transaction_type, wal
   const [walletName, setWalletName] = useState('')
   const [date, setDate] = useState('')
 
-  const classNames = twMerge('w-full p-4 bg-orange-300 rounded-xl', className)
+  const classNames = twMerge('w-full p-4 bg-orange-300 rounded-sm', className)
 
   useEffect(() => {
     const wallet = wallets.find((e) => e.id === wallet_id)
