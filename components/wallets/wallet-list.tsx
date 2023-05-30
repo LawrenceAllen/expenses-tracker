@@ -2,6 +2,7 @@ import { useWallet } from "../../hooks/useWallet"
 import { NewWalletType } from "../../types/wallet"
 import { List } from "../global"
 import WalletCard from "./wallet-card"
+import { twMerge } from "tailwind-merge"
 
 type WalletList = {
   className?: string
@@ -13,19 +14,19 @@ export const WalletList = ({className, warningText, setWarningText}: WalletList)
 
   const wallets = useWallet()
 
+  const classNames = twMerge('flex-1 relative z-0 overflow-y-auto h-screen', className)
+
   return(
-    <div className="p-4 pt-0">
-      <List className={className}>
-        {wallets.map((wallet: NewWalletType) => (
-          <WalletCard 
-            key={wallet.id}
-            wallet={wallet}
-            warningText={warningText}
-            setWarningText={setWarningText}
-          />
-        ))}
-      </List>
-    </div>
+    <List className={classNames}>
+      {wallets.map((wallet: NewWalletType) => (
+        <WalletCard 
+          key={wallet.id}
+          wallet={wallet}
+          warningText={warningText}
+          setWarningText={setWarningText}
+        />
+      ))}
+    </List>
   )
 }
 

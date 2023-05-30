@@ -50,13 +50,17 @@ const Wallets = () => {
   }
 
   const WalletListComponent = useMemo(() =>
-    <WalletProvider>
-      <WalletList className="gap-0" warningText={warningText} setWarningText={setWarningText}/>
-    </WalletProvider>
-  , [wallets])
-  
+    <div className='flex justify-between overflow-auto'>
+      <div className='flex flex-col w-full p-4'>
+        <WalletProvider>
+          <WalletList warningText={warningText} setWarningText={setWarningText} />
+        </WalletProvider >
+      </div>
+    </div>
+    ,[wallets])
+
   return (
-    <main>
+    <main className='flex flex-col h-screen'>
       <Header page='wallets' />
       <ClickAwayListener onClickAway={addFormsClickAway}>
         <div className='p-4 pt-4'>
