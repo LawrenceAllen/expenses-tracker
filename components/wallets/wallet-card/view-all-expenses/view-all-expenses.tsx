@@ -26,7 +26,7 @@ export const ViewAllExpenses = ({firstSortedExpense, wallet, className}: ViewAll
             wallet_id={firstSortedExpense.wallet_id}
             type="preview"
           />
-          <Link className="block mt-3" href={`wallets/${wallet.id}`}>
+          <Link className="block mt-3" href={`wallets/${wallet.name}`}>
             <Button className="bg-orange-100 border-[1px] border-orange-200 rounded-tl-[0px] rounded-tr-[0px] shadow-sm">
               <p className="text-cyan text-center">View all</p>
             </Button>

@@ -13,10 +13,10 @@ const WalletActivities = () => {
   const wallets = getWallets()
 
   const router = useRouter()
-  const id = router.query.walletID
+  const name = router.query.walletName
 
   useEffect(() => {
-    const wallet = wallets.find(e => e.id === id)
+    const wallet = wallets.find(e => e.name === name)
 
     if (wallet !== undefined) {
       setWalletName(wallet.name)
