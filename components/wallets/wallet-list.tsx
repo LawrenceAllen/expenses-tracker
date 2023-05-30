@@ -14,7 +14,7 @@ export const WalletList = ({className, warningText, setWarningText}: WalletList)
 
   const wallets = useWallet()
 
-  const classNames = twMerge('flex-1 relative z-0 overflow-y-auto h-screen', className)
+  const classNames = twMerge('flex-1 relative z-0 overflow-y-auto h-screen gap-0', className)
 
   return(
     <List className={classNames}>

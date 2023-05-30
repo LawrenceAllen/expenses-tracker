@@ -51,7 +51,7 @@ const Wallets = () => {
 
   const WalletListComponent = useMemo(() =>
     <div className='flex justify-between overflow-auto'>
-      <div className='flex flex-col w-full p-4'>
+      <div className='flex flex-col w-full px-4'>
         <WalletProvider>
           <WalletList warningText={warningText} setWarningText={setWarningText} />
         </WalletProvider >
